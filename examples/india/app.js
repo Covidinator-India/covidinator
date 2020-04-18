@@ -205,7 +205,7 @@ am4core.ready(function() {
   // https://www.amcharts.com/docs/v4/chart-types/map/#Map_data
   // you can use more accurate world map or map of any other country - a wide selection of maps available at: https://github.com/amcharts/amcharts4-geodata
   //mapChart.geodata = am4geodata_worldIndiaLow;
-  mapChart.geodataSource.url = "../../deps/amcharts4-geodata/india_with_ladakh.json";
+  mapChart.geodataSource.url = "deps/amcharts4-geodata/india_with_ladakh.json";
 
   // Set projection
   // https://www.amcharts.com/docs/v4/chart-types/map/#Setting_projection
