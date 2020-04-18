@@ -14,7 +14,7 @@ async function makeGetRequest() {
   let res = await axios.get('https://api.covid19india.org/data.json');
 
   let data = res.data;
-  console.log(data.cases_time_series);
+  //console.log(data.cases_time_series);
 
 	for(var i = 0; i < data.cases_time_series.length; i++) {
 	    var obj = data.cases_time_series[i];
@@ -27,7 +27,7 @@ async function makeGetRequest() {
 	    covid_total_timeline = newArr;
 	  }
 	}
-		console.log((covid_total_timeline));
+		//console.log((covid_total_timeline));
 		fs.writeFile('../data/js/india_total_timeline.js', 'var covid_total_timeline = '+ JSON.stringify(covid_total_timeline), function (err) {
 		  if (err) return console.log(err);
 		  //console.log('Hello World > helloworld.txt');
@@ -127,11 +127,62 @@ async function getStateStatsTimeline() {
   var recovered = [];
   var deceased = [];
 
-  console.log(data.states_daily);
+  //console.log(data.states_daily);
 
-	for(var i = 0; i < data.states_daily.length; i++) {
-	    var obj = data.states_daily[i];
-	    if (obj.status=="Confirmed"){
+	for(var i = 0, d = 1; i < data.states_daily.length; i++) {
+	    	var obj = data.states_daily[i];
+				if(d==1){
+			    	for (let [key, value] of Object.entries(obj)) {
+					  if((key!="date") && (key !="status") && (key!="tt")){
+					  		//console.log(`${key}: ${value}`);
+					var array = [];
+					if(value==""){
+						value=0;
+					}
+					Object.assign(array, [{confirmed: parseInt(value),id:"IN-"+key.toUpperCase(),date:formatDate(obj.date)}]);
+				    var newArr = confirmed.concat(array);
+				    confirmed = newArr;
+					  }
+					}
+	    		 d++;
+	    	}
+	    	else if(d==2){
+			    	for (let [key, value] of Object.entries(obj)) {
+					  if((key!="date") && (key !="status") && (key!="tt")){
+					  		//console.log(`${key}: ${value}`);
+					var array = [];
+					if(value==""){
+						value=0;
+					}
+					Object.assign(array, [{recovered: parseInt(value),id:"IN-"+key.toUpperCase(),date:formatDate(obj.date)}]);
+				    var newArr = recovered.concat(array);
+				    recovered = newArr;
+					  }
+					}
+	    		d++;
+	    	}
+	    	else if(d==3){
+				    	for (let [key, value] of Object.entries(obj)) {
+					  if((key!="date") && (key !="status") && (key!="tt")){
+					  		//console.log(`${key}: ${value}`);
+					var array = [];
+					if(value==""){
+						value=0;
+					}
+					Object.assign(array, [{deceased: parseInt(value),id:"IN-"+key.toUpperCase(),date:formatDate(obj.date)}]);
+				    var newArr = deceased.concat(array);
+				    deceased = newArr;
+					  }
+					}
+	    		d=1;
+	    	}
+	   
+	}
+
+
+	    //console.log(formatDate(obj.date));
+	    //console.log(data.states_daily.length);
+	    /*if (obj.status=="Confirmed"){
 	    	for (let [key, value] of Object.entries(obj)) {
 			  if((key!="date") && (key !="status") && (key!="tt")){
 			  		//console.log(`${key}: ${value}`);
@@ -167,13 +218,14 @@ async function getStateStatsTimeline() {
 			    deceased = newArr;
 				  }
 				}
-		    }
+		    }*/
 
 
-	}
+	
 		//console.log((parseInt(confirmed[38].confirmed)+parseInt(confirmed[75].confirmed)));
 		//console.log((confirmed[74]));
 		//console.log((confirmed[111]));
+		//console.log(JSON.stringify(confirmed));
 
 		//compound values - diff of 37
 		var n = 0;
