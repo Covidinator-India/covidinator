@@ -19,9 +19,13 @@ async function makeGetRequest() {
 	for(var i = 0; i < data.cases_time_series.length; i++) {
 	    var obj = data.cases_time_series[i];
 	    var array = [];
+	    if(formatDate(data.cases_time_series[i].date+"2020")>"2020-03-15"){
+
+	   
 	    Object.assign(array, [{confirmed: parseInt(obj.totalconfirmed),"deaths":parseInt(obj.totaldeceased),"recovered":parseInt(obj.totalrecovered),"date":formatDate(data.cases_time_series[i].date+"2020")}]);
 	    var newArr = covid_total_timeline.concat(array);
 	    covid_total_timeline = newArr;
+	  }
 	}
 		console.log((covid_total_timeline));
 		fs.writeFile('../data/js/india_total_timeline.js', 'var covid_total_timeline = '+ JSON.stringify(covid_total_timeline), function (err) {
