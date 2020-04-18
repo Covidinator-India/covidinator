@@ -1240,7 +1240,7 @@ am4core.ready(function() {
 
   // show world data
   function showWorld() {
-    currentCountry = "World";
+    currentCountry = "IN";
     currentPolygon = undefined;
     resetHover();
 
