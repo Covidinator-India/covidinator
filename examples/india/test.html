@@ -1,0 +1,74 @@
+<html>
+<head>
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/maps.js"></script>
+<script src="https://www.amcharts.com/lib/4/geodata/worldLow.js"></script>
+<!--<script src="https://www.amcharts.com/lib/4/geodata/usaLow.js"></script>-->
+<style type="text/css">
+	body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+#chartdiv {
+  width: 100%;
+  height: 400px;
+}
+
+</style>
+</head>
+<body>
+	<div id="chartdiv"></div>
+<script type="text/javascript">
+/**
+ * ---------------------------------------
+ * This demo was created using amCharts 4.
+ *
+ * For more information visit:
+ * https://www.amcharts.com/
+ *
+ * Documentation is available at:
+ * https://www.amcharts.com/docs/v4/
+ * ---------------------------------------
+ */
+
+// Create map instance
+var chart = am4core.create("chartdiv", am4maps.MapChart);
+
+// Set map definition
+chart.geodata = am4geodata_worldLow;
+
+// Set projection
+chart.projection = new am4maps.projections.Miller();
+
+// Series for World map
+var worldSeries = chart.series.push(new am4maps.MapPolygonSeries());
+worldSeries.exclude = ["AQ"];
+worldSeries.useGeodata = true;
+var polygonTemplate = worldSeries.mapPolygons.template;
+polygonTemplate.tooltipText = "{name}";
+polygonTemplate.fill = am4core.color("#74B266");
+polygonTemplate.propertyFields.disabled = "disabled";
+var hs = polygonTemplate.states.create("hover");
+hs.properties.fill = am4core.color("#367B25");
+worldSeries.data = [{
+  id: "IN",
+  disabled: true
+}];
+
+// Series for United States map
+var usaSeries = chart.series.push(new am4maps.MapPolygonSeries());
+//usaSeries.geodata = am4geodata_usaLow
+//usaSeries.data = JSON.parse(JSON.stringify(dataArray));
+usaSeries.geodataSource.url = "../../deps/amcharts4-geodata/india_filtered.json";
+var polygonTemplate = usaSeries.mapPolygons.template;
+polygonTemplate.tooltipText = "{name}";
+polygonTemplate.fill = am4core.color("#74B266");
+var hs = polygonTemplate.states.create("hover");
+hs.properties.fill = am4core.color("#367B25");
+
+/*
+
+{"type":"Feature","id":"Maharashtra","properties":{"hc-group":"admin1","hc-key":"maharashtra","hc-a2":"MA","name":"Maharashtra","hc-middle-x":0.4,"hc-middle-y":0.45},"geometry":{"type":"Polygon","coordinates":[[[611,3779],[639,3804],[685,3804],[684,3869],[710,3941],[684,3967],[712,3989],[763,3937],[800,3931],[862,3984],[872,4026],[843,4084],[806,4123],[769,4131],[836,4147],[840,4181],[880,4190],[884,4223],[927,4246],[1004,4250],[1007,4282],[971,4270],[925,4282],[854,4263],[831,4311],[865,4316],[843,4381],[958,4423],[1007,4415],[1056,4446],[1085,4401],[1077,4335],[1103,4313],[1181,4290],[1195,4297],[1259,4270],[1274,4235],[1339,4204],[1564,4198],[1607,4189],[1626,4148],[1633,4087],[1698,4080],[1738,4122],[1782,4119],[1784,4168],[1842,4224],[1844,4263],[1877,4263],[1937,4305],[1983,4294],[2007,4317],[2075,4319],[2101,4282],[2103,4232],[2055,4238],[2075,4178],[2180,4189],[2213,4176],[2305,4217],[2306,4237],[2390,4253],[2392,4217],[2417,4225],[2491,4202],[2561,4209],[2555,4247],[2657,4266],[2663,4290],[2748,4274],[2764,4228],[2830,4248],[2871,4222],[2940,4230],[2982,4258],[3043,4218],[3054,4166],[3093,4171],[3139,4150],[3107,4105],[3072,4093],[3060,4035],[3072,4006],[3099,4005],[3112,3917],[3079,3895],[3127,3890],[3114,3814],[3125,3790],[3046,3761],[3049,3726],[3099,3713],[3092,3649],[3052,3642],[3141,3564],[3160,3534],[3213,3502],[3182,3469],[3200,3444],[3169,3419],[3120,3428],[3109,3459],[3046,3404],[3005,3313],[3031,3250],[3004,3216],[2949,3202],[2877,3257],[2893,3267],[2889,3333],[2866,3355],[2905,3461],[2884,3493],[2827,3533],[2735,3496],[2679,3530],[2649,3485],[2581,3513],[2565,3552],[2528,3555],[2524,3592],[2372,3621],[2343,3649],[2361,3602],[2333,3569],[2340,3486],[2298,3465],[2296,3410],[2249,3421],[2216,3447],[2186,3433],[2152,3319],[2182,3308],[2212,3268],[2175,3256],[2143,3179],[2091,3165],[2066,3091],[2073,3073],[2044,3063],[2007,3084],[2013,3130],[1968,3117],[1955,3071],[1921,3027],[1868,3039],[1853,2943],[1784,2898],[1772,2860],[1744,2888],[1703,2874],[1678,2835],[1649,2833],[1648,2775],[1673,2751],[1574,2753],[1508,2739],[1496,2769],[1467,2757],[1407,2797],[1387,2764],[1413,2722],[1403,2692],[1417,2612],[1352,2607],[1344,2622],[1280,2612],[1260,2572],[1214,2612],[1160,2611],[1153,2550],[1074,2533],[1070,2493],[1024,2479],[1002,2504],[916,2459],[946,2442],[947,2385],[1002,2358],[994,2310],[942,2195],[904,2202],[866,2182],[862,2156],[809,2151],[800,2191],[708,2189],[681,2256],[654,2267],[603,2462],[604,2519],[587,2614],[593,2672],[563,2764],[575,2761],[549,2852],[549,2913],[516,2993],[476,3184],[491,3211],[470,3243],[472,3309],[448,3361],[464,3425],[450,3426],[459,3500],[432,3582],[436,3630],[415,3697],[443,3735],[449,3792],[470,3787],[500,3822],[529,3815],[528,3786],[539,3781],[541,3780],[557,3773],[558,3773],[559,3772],[598,3754],[611,3779]],[[1988,3141],[1979,3140],[1977,3133],[1986,3134],[1988,3141]],[[930,2207],[924,2219],[913,2218],[915,2207],[930,2207]]]}}*/
+</script>
+</body>
+</html>
