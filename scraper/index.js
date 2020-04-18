@@ -232,5 +232,5 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 //getStateStats();
-//getStateStatsTimeline();
+getStateStatsTimeline();
 makeGetRequest();
