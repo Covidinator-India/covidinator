@@ -212,7 +212,7 @@ async function getStateStatsTimeline() {
 		  //console.log('Hello World > helloworld.txt');
 		//});
 
-		fs.writeFile('../data/js/india_timeline.js', 'var covid_world_timeline = '+JSON.stringify(covid_world_timeline), function (err) {
+		fs.writeFile('../data/js/india_states_timeline.js', 'var covid_world_timeline = '+JSON.stringify(covid_world_timeline), function (err) {
 		  if (err) return console.log(err);
 		  //console.log('Hello World > helloworld.txt');
 		});
