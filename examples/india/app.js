@@ -192,12 +192,13 @@ am4core.ready(function() {
   mapChart.zoomControl.align = "right";
   mapChart.zoomControl.marginRight = 15;
   mapChart.zoomControl.valign = "middle";
-  mapChart.homeGeoPoint = { longitude: 0, latitude: -2 };
+  mapChart.homeZoomLevel = 2;
+  mapChart.homeGeoPoint = { longitude: 160, latitude: 20 };
 
   // by default minus button zooms out by one step, but we modify the behavior so when user clicks on minus, the map would fully zoom-out and show world data
-  mapChart.zoomControl.minusButton.events.on("hit", showWorld);
+  //mapChart.zoomControl.minusButton.events.on("hit", showWorld);
   // clicking on a "sea" will also result a full zoom-out
-  mapChart.seriesContainer.background.events.on("hit", showWorld);
+  //mapChart.seriesContainer.background.events.on("hit", showWorld);
   mapChart.seriesContainer.background.events.on("over", resetHover);
   mapChart.seriesContainer.background.fillOpacity = 0;
   mapChart.zoomEasing = am4core.ease.sinOut;
@@ -219,13 +220,14 @@ am4core.ready(function() {
   mapChart.backgroundSeries.hidden = true;
 
 
+
   // Map polygon series (defines how country areas look and behave)
   var polygonSeries = mapChart.series.push(new am4maps.MapPolygonSeries());
   polygonSeries.dataFields.id = "id";
   polygonSeries.dataFields.value = "confirmedPC";
   polygonSeries.interpolationDuration = 0;
 
-  polygonSeries.exclude = ["AQ"]; // Antarctica is excluded in non-globe projection
+  //polygonSeries.exclude = ["AQ"]; // Antarctica is excluded in non-globe projection
   polygonSeries.useGeodata = true;
   polygonSeries.nonScalingStroke = true;
   polygonSeries.strokeWidth = 0.5;
@@ -254,19 +256,18 @@ am4core.ready(function() {
     "dataField": "value"
   })
 
+
   //Add India
 
-  /*// Series for India custom map
-  var indiaSeries = mapChart.series.push(new am4maps.MapPolygonSeries());
-  indiaSeries.geodataSource.url = "../../deps/amcharts4-geodata/india_with_ladakh.json";
-  var indiaPolygonTemplate = indiaSeries.mapPolygons.template;
-  indiaPolygonTemplate.tooltipText = "{name}";
-  indiaPolygonTemplate.fill = am4core.color("#6b6b6b");
-  var hs = indiaPolygonTemplate.states.create("hover");
-  hs.properties.fill = am4core.color("#367B25");
+  // Series for India custom map
+  //var indiaPolygonTemplate = indiaSeries.mapPolygons.template;
+  //indiaPolygonTemplate.tooltipText = "{name}";
+  //indiaPolygonTemplate.fill = am4core.color("#6b6b6b");
+  //var hs = indiaPolygonTemplate.states.create("hover");
+  //hs.properties.fill = am4core.color("#367B25");
 
-  mapChart.events.on("ready", function(ev) {
-    mapChart.zoomToMapObject(polygonSeries.getPolygonById("IN"));
+  /*mapChart.events.on("ready", function(ev) {
+    mapChart.zoomToMapObject(polygonSeries.getPolygonById("IN-MH"));
   });*/
 
   // you can have pacific - centered map if you set this to -154.8
@@ -389,7 +390,7 @@ am4core.ready(function() {
   title.fill = am4core.color("#ffffff");
   title.y = 20;
 
-  // switch between map and globe
+/*  // switch between map and globe
   var mapGlobeSwitch = mapChart.createChild(am4core.SwitchButton);
   mapGlobeSwitch.align = "right"
   mapGlobeSwitch.y = 15;
@@ -414,7 +415,7 @@ am4core.ready(function() {
       polygonSeries.data = mapData;
       polygonSeries.exclude = ["AQ"];
     }
-  })
+  })*/
 
 
   // switch between map and globe
@@ -1133,7 +1134,9 @@ am4core.ready(function() {
     updateCountryName();
 
     mapPolygon.isActive = true;
+    
     // meaning it's globe
+    /*
     if (mapGlobeSwitch.isActive) {
       // animate deltas (results the map to be rotated to the selected country)
       if (mapChart.zoomLevel != 1) {
@@ -1143,11 +1146,11 @@ am4core.ready(function() {
       else {
         rotateAndZoom(mapPolygon);
       }
-    }
+    }*/
     // if it's not a globe, simply zoom to the country
-    else {
+   // else {
       mapChart.zoomToMapObject(mapPolygon, getZoomLevel(mapPolygon));
-    }
+    //}
   }
 
   // change line chart data to the selected countries  
@@ -1453,12 +1456,12 @@ am4core.ready(function() {
     return am4geodata_data_states_us[id] ? am4geodata_data_states_us[id] : id;
   }
 
-  /*function removeAntarctica(mapData) {
+  function removeAntarctica(mapData) {
     for (var i = mapData.length - 1; i >= 0; i--) {
       if (mapData[i].id == "AQ") {
         mapData.splice(i, 1);
       }
     }
-  }*/
+  }
 
 });
