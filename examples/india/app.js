@@ -1112,8 +1112,9 @@ am4core.ready(function() {
     // save current polygon
     currentPolygon = mapPolygon;
     var countryIndex = countryIndexMap[mapPolygon.dataItem.id];
+    //console.log(countryIndex);
     currentCountry = mapPolygon.dataItem.dataContext.name;
-
+    //console.log(currentCountry);
     // make others inactive
     polygonSeries.mapPolygons.each(function(polygon) {
       polygon.isActive = false;
@@ -1153,12 +1154,30 @@ am4core.ready(function() {
 
   // change line chart data to the selected countries  CHECK HERE
   function setCountryData(countryIndex) {
+          //Get Key function
+      Object.prototype.getKeyByValue = function( value ) {
+          for( var prop in this ) {
+              if( this.hasOwnProperty( prop ) ) {
+                   if( this[ prop ] === value )
+                       return prop;
+              }
+          }
+      }
+    var state = countryIndexMap.getKeyByValue(countryIndex);
+      //console.log(state);
     // instead of setting whole data array, we modify current raw data so that a nice animation would happen
+    var countryData = []
     for (var i = 0; i < lineChart.data.length; i++) {
       var di = covid_world_timeline[i].list;
       //console.log(di);
-
-      var countryData = di[countryIndex];
+      for(var r = 0; r<di.length;r++){
+        if (di[r].id==state){
+          countryData=di[r];
+        }
+      }
+      //var countryData = di[countryIndex];
+      //console.log(countryData);
+      //console.log(countryDatatest);
       var dataContext = lineChart.data[i];
       if (countryData) {
         dataContext.recovered = countryData.recovered;
