@@ -320,6 +320,10 @@ am4core.ready(function() {
 
   // add circle inside the image
   var circle = imageTemplate.createChild(am4core.Circle);
+  var circle2 = imageTemplate.createChild(am4core.Circle);
+//circle2.radius = circle.radius;
+  //circle2.propertyFields.fill = "color";
+  circle2.applyOnClones = true;
   // this makes the circle to pulsate a bit when showing it
   circle.hiddenState.properties.scale = 0.0001;
   circle.hiddenState.transitionDuration = 2000;
@@ -328,9 +332,33 @@ am4core.ready(function() {
   // later we set fill color on template (when changing what type of data the map should show) and all the clones get the color because of this
   circle.applyOnClones = true;
 
+  //circle animation
+
+  // later we set fill color on template (when changing what type of data the map should show) and all the clones get the color because of this
+  //circle2.applyOnClones = true;
+  circle2.events.on("inited", function(event){
+  animateBullet(event.target);
+  })
+
+
+  function animateBullet(circle) {
+      var animation = circle.animate([{ property: "scale", from: 1, to: 1.3 }, { property: "opacity", from: 1, to: 0 }], 1000, am4core.ease.circleOut);
+      animation.events.on("animationended", function(event){
+        animateBullet(event.target.object);
+      })
+  }
+
   // heat rule makes the bubbles to be of a different width. Adjust min/max for smaller/bigger radius of a bubble
   bubbleSeries.heatRules.push({
     "target": circle,
+    "property": "radius",
+    "min": 3,
+    "max": 30,
+    "dataField": "value"
+  })
+
+    bubbleSeries.heatRules.push({
+    "target": circle2,
     "property": "radius",
     "min": 3,
     "max": 30,
@@ -342,11 +370,14 @@ am4core.ready(function() {
     bubbleSeries.dataItems.each((dataItem) => {
       var mapImage = dataItem.mapImage;
       var circle = mapImage.children.getIndex(0);
+      var circle2 = mapImage.children.getIndex(1);
       if (mapImage.dataItem.value == 0) {
         circle.hide(0);
+        circle2.hide(0);
       }
       else if (circle.isHidden || circle.isHiding) {
         circle.show();
+        circle2.show();
       }
     })
   })
@@ -579,7 +610,11 @@ am4core.ready(function() {
   sizeSlider.events.on("rangechanged", function() {
     sizeSlider.startGrip.scale = 0.75 + sizeSlider.start;
     bubbleSeries.heatRules.getIndex(0).max = 30 + sizeSlider.start * 100;
+    bubbleSeries.heatRules.getIndex(1).max = 30 + sizeSlider.start * 100;
     circle.clones.each(function(clone) {
+      clone.radius = clone.radius;
+    })
+    circle2.clones.each(function(clone) {
       clone.radius = clone.radius;
     })
   })
@@ -634,7 +669,17 @@ am4core.ready(function() {
     var maxValue = max[currentType] * filterSlider.start + 1;
     if (!isNaN(maxValue) && bubbleSeries.inited) {
       bubbleSeries.heatRules.getIndex(0).maxValue = maxValue;
+      bubbleSeries.heatRules.getIndex(1).maxValue = maxValue;
       circle.clones.each(function(clone) {
+        if (clone.dataItem.value > maxValue) {
+          clone.dataItem.hide();
+        }
+        else {
+          clone.dataItem.show();
+        }
+        clone.radius = clone.radius;
+      })
+        circle2.clones.each(function(clone) {
         if (clone.dataItem.value > maxValue) {
           clone.dataItem.hide();
         }
@@ -809,7 +854,7 @@ am4core.ready(function() {
       }
 
       for (var key in columnSeries) {
-        columnSeries[key].hide(0);
+       columnSeries[key].hide();
       }
 
       for (var key in series) {
@@ -1376,6 +1421,7 @@ am4core.ready(function() {
       }
 
       bubbleSeries.heatRules.getIndex(0).maxValue = max[currentType];
+      bubbleSeries.heatRules.getIndex(1).maxValue = max[currentType];
       polygonSeries.heatRules.getIndex(0).maxValue = maxPC[currentType];
 
       bubbleSeries.invalidateRawData();
