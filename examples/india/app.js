@@ -1412,7 +1412,7 @@ am4core.ready(function() {
 
   // set initial data and names
   updateCountryName();
-  changeDataType("active");
+  changeDataType("confirmed");
   populateCountries(slideData.list);
 
   setTimeout(updateSeriesTooltip, 3000);
