@@ -1178,9 +1178,9 @@ am4core.ready(function() {
       }
     }
 
-    //lineChart.invalidateRawData();
-    //updateTotals(currentIndex);
-    //setTimeout(updateSeriesTooltip, 1000);
+    lineChart.invalidateRawData();
+    updateTotals(currentIndex);
+    setTimeout(updateSeriesTooltip, 1000);
   }
 
   function updateSeriesTooltip() {
