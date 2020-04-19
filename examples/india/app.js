@@ -138,7 +138,6 @@ am4core.ready(function() {
 
   // as we will be modifying raw data, make a copy
   var mapData = JSON.parse(JSON.stringify(slideData.list));
-
   // remove items with 0 values for better performance
   for (var i = mapData.length - 1; i >= 0; i--) {
     if (mapData[i].confirmed == 0) {
@@ -469,7 +468,7 @@ am4core.ready(function() {
   // buttons & chart container
   var buttonsAndChartContainer = container.createChild(am4core.Container);
   buttonsAndChartContainer.layout = "vertical";
-  buttonsAndChartContainer.height = am4core.percent(45); // make this bigger if you want more space for the chart
+  buttonsAndChartContainer.height = am4core.percent(40); // make this bigger if you want more space for the chart
   buttonsAndChartContainer.width = am4core.percent(100);
   buttonsAndChartContainer.valign = "bottom";
 
@@ -598,7 +597,7 @@ am4core.ready(function() {
   sizeLabel.tooltip.setBounds({ x: 0, y: 0, width: 200000, height: 200000 })
   sizeLabel.tooltip.label.wrap = true;
   sizeLabel.tooltip.label.maxWidth = 300;
-  sizeLabel.tooltipText = "Some countries have so many cases that bubbles for countries with smaller values often look the same even if there is a significant difference between them. This slider can be used to increase maximum size of a bubble so that when you zoom in to a region with relatively small values you could compare them anyway."
+  sizeLabel.tooltipText = "Some states have so many cases that bubbles for states with smaller values often look the same even if there is a significant difference between them. This slider can be used to increase maximum size of a bubble so that when you zoom in to a region with relatively small values you could compare them anyway."
   sizeLabel.fill = am4core.color("#ffffff");
 
   sizeLabel.adapter.add("y", function(y, target) {
@@ -660,7 +659,7 @@ am4core.ready(function() {
   filterLabel.paddingBottom = 40;
   filterLabel.tooltip.label.wrap = true;
   filterLabel.tooltip.label.maxWidth = 300;
-  filterLabel.tooltipText = "This filter allows to remove countries with many cases from the map so that it would be possible to compare countries with smaller number of cases."
+  filterLabel.tooltipText = "This filter allows to remove states with many cases from the map so that it would be possible to compare states with smaller number of cases."
   filterLabel.fill = am4core.color("#ffffff");
 
   filterLabel.adapter.add("y", function(y, target) {
@@ -707,7 +706,6 @@ am4core.ready(function() {
 
   // make a copy of data as we will be modifying it
   lineChart.data = covid_total_timeline;
-
   // date axis
   // https://www.amcharts.com/docs/v4/concepts/axes/date-axis/
   var dateAxis = lineChart.xAxes.push(new am4charts.DateAxis());
@@ -719,10 +717,10 @@ am4core.ready(function() {
   dateAxis.tooltip.background.fill = activeColor;
   dateAxis.tooltip.background.stroke = activeColor;
   dateAxis.renderer.labels.template.fill = am4core.color("#ffffff");
-  /*
+  
   dateAxis.renderer.labels.template.adapter.add("fillOpacity", function(fillOpacity, target){
       return dateAxis.valueToPosition(target.dataItem.value) + 0.1;
-  })*/
+  })
 
   // value axis
   // https://www.amcharts.com/docs/v4/concepts/axes/value-axis/
@@ -962,7 +960,7 @@ am4core.ready(function() {
 
   // data warning label
   var label = lineChart.plotContainer.createChild(am4core.Label);
-  label.text = "Current day stats may be incomplete until countries submit their data.";
+  label.text = "Current day stats may be incomplete until states submit their data.";
   label.fill = am4core.color("#ffffff");
   label.fontSize = "0.8em";
   label.paddingBottom = 4;
@@ -1108,7 +1106,7 @@ am4core.ready(function() {
     if (currentPolygon == mapPolygon) {
       currentPolygon.isActive = false;
       currentPolygon = undefined;
-      showWorld();
+      //showWorld();
       return;
     }
     // save current polygon
@@ -1153,11 +1151,12 @@ am4core.ready(function() {
     //}
   }
 
-  // change line chart data to the selected countries  
+  // change line chart data to the selected countries  CHECK HERE
   function setCountryData(countryIndex) {
     // instead of setting whole data array, we modify current raw data so that a nice animation would happen
     for (var i = 0; i < lineChart.data.length; i++) {
       var di = covid_world_timeline[i].list;
+      //console.log(di);
 
       var countryData = di[countryIndex];
       var dataContext = lineChart.data[i];
