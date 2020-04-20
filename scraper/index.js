@@ -270,6 +270,46 @@ async function getStateStatsTimeline() {
 		});
 }
 
+async function getMaharashtra() {
+  
+  let res = await axios.get('https://api.covid19india.org/v2/state_district_wise.json');
+
+  let data = res.data;
+  var districts = [];
+  //console.log(data.cases_time_series);
+  	for(var i = 0; i < data.length; i++) {
+	for (let [key, value] of Object.entries(data[i])) {
+	  if(value=="Maharashtra"){
+	  		console.log(`${key}: ${value}`);
+		var array = [];
+		var z;
+		for(var x = 0; x < data[i].districtData.length; x++){
+			if(data[i].districtData[x].confirmed==0){
+				z = "green";
+			}
+			else if(data[i].districtData[x].confirmed <=20){
+				z = "yellow";
+			}
+			else if(data[i].districtData[x].confirmed <=100){
+				z = "orange";
+			}
+			else {
+				z = "red";
+			}
+			districts.push({id:data[i].districtData[x].district,confirmed:data[i].districtData[x].confirmed,zone:z})
+		}
+		//array.push(data[i].districtData);
+		console.log(districts);
+		}
+	}
+}
+		//console.log((covid_total_timeline));
+		fs.writeFile('../data/js/MH_districts.js', 'var covid_maharashtra = '+ JSON.stringify(districts), function (err) {
+		  if (err) return console.log(err);
+		  //console.log('Hello World > helloworld.txt');
+		});
+}
+
 function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -284,5 +324,6 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 //getStateStats();
-getStateStatsTimeline();
-makeGetRequest();
+//getStateStatsTimeline();
+//makeGetRequest();
+getMaharashtra();

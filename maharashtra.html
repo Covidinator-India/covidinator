@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Covidinator.in | COVID-19 Dashboard for India</title>
+
+    <!-- amCharts includes -->
+    <script src="deps/amcharts4/core.js"></script>
+    <script src="deps/amcharts4/charts.js"></script>
+    <script src="deps/amcharts4/maps.js"></script>
+    
+    <script src="deps/amcharts4/themes/dark.js"></script>
+    <script src="deps/amcharts4/themes/animated.js"></script>
+    <script src="deps/amcharts4-geodata/worldIndiaLow.js"></script>
+    <!--<script src="deps/amcharts4-geodatadata/countries2.js"></script>-->
+    <!--<script src="deps/amcharts4-geodata/data/states_in.js"></script>-->
+
+
+    <!-- DataTables includes -->
+    <script src="deps/jquery/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" media="all" href="deps/datatables/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" media="all" href="deps/datatables/css/select.dataTables.min.css" />
+    <script src="deps/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="deps/datatables/js/dataTables.select.min.js"></script>
+
+    <!-- Data  -->
+   <script src="data/js/india_states_timeline.js"></script>
+    <script src="data/js/india_total_timeline.js"></script>
+    <script src="data/js/MH_districts.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" media="all" href="examples/india/dark.css" />
+    <style>
+    .red {
+      background-color: red;
+      color:red;
+      font-size:1px;
+      opacity: 0.85;
+    }
+    .orange {
+      background-color: darkorange;
+      color:darkorange;
+      font-size:1px;
+      opacity: 0.85;
+    }
+    .yellow {
+      background-color: yellow;
+      color:yellow;
+      font-size:1px;
+      opacity: 0.85;
+    }
+    .green {
+      background-color: green;
+      color:green;
+      font-size:1px;
+      opacity: 0.85;
+    }
+    .no-sort::after { display: none!important; }
+
+    .no-sort { pointer-events: none!important; cursor: default!important; }
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163963487-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-163963487-1');
+    </script>
+    <!-- Main app -->
+    <script src="examples/maharashtra/app.js"></script>
+
+  </head>
+  <body>
+    <div class="flexbox">
+      <div id="chartdiv" class="chartdiv"></div>
+      <div id="list">
+        <table id="areas" class="compact hover order-column row-border">
+          <thead>
+            <tr>
+              <th></th>
+              <th>District</th>
+              <th>Confirmed</th>
+              <th>Population</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
