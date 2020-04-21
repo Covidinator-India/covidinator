@@ -8,6 +8,7 @@ fs = require('fs');
 var covid_total_timeline  = [];
 var covid_world_timeline  = [];
 var india_states_daily  = [];
+var currentdate = formatDate(new Date());
 
 async function makeGetRequest() {
   
@@ -25,18 +26,16 @@ async function makeGetRequest() {
 	  }
 	}
 	var lastentry = covid_total_timeline.length-1;
-	var currentdate = formatDate(new Date());
 	var lastdate = covid_total_timeline[lastentry].date;
-	console.log(currentdate);
-	console.log(data.statewise[0].confirmed);
+	//console.log(currentdate);
+	//console.log(data.statewise[0].confirmed);
 	if (lastdate<currentdate){
 		Object.assign(array, [{confirmed: parseInt(data.statewise[0].confirmed),"deaths":parseInt(data.statewise[0].deaths),"recovered":parseInt(data.statewise[0].recovered),"date":currentdate}]);
 	    var newArr = covid_total_timeline.concat(array);
 	    covid_total_timeline = newArr;
 	}
-	console.log(covid_total_timeline[lastentry].date);
-	console.log(covid_total_timeline[34]);
-    console.log(covid_total_timeline[35]);
+	//console.log(covid_total_timeline[lastentry].date);
+	//console.log(covid_total_timeline[34]);
 
 
 		fs.writeFile('../data/js/india_total_timeline.js', 'var covid_total_timeline = '+ JSON.stringify(covid_total_timeline), function (err) {
@@ -189,49 +188,6 @@ async function getStateStatsTimeline() {
 	    	}
 	   
 	}
-
-
-	    //console.log(formatDate(obj.date));
-	    //console.log(data.states_daily.length);
-	    /*if (obj.status=="Confirmed"){
-	    	for (let [key, value] of Object.entries(obj)) {
-			  if((key!="date") && (key !="status") && (key!="tt")){
-			  		//console.log(`${key}: ${value}`);
-			var array = [];
-			if(value==""){
-				value=0;
-			}
-			Object.assign(array, [{confirmed: parseInt(value),id:"IN-"+key.toUpperCase(),date:formatDate(obj.date)}]);
-		    var newArr = confirmed.concat(array);
-		    confirmed = newArr;
-			  }
-			}
-	    }
-	    else if (obj.status=="Recovered"){
-				    	for (let [key, value] of Object.entries(obj)) {
-						  if((key!="date") && (key !="status")){
-						  		//console.log(`${key}: ${value}`);
-						var array = [];
-						Object.assign(array, [{recovered: value,id:"IN-"+key.toUpperCase(),date:formatDate(obj.date)}]);
-					    var newArr = recovered.concat(array);
-					    recovered = newArr;
-						  }
-						}
-				    }
-
-	    else if (obj.status=="Deceased"){
-		    	for (let [key, value] of Object.entries(obj)) {
-				  if((key!="date") && (key !="status")){
-				  		//console.log(`${key}: ${value}`);
-				var array = [];
-				Object.assign(array, [{deceased: value,id:"IN-"+key.toUpperCase(),date:formatDate(obj.date)}]);
-			    var newArr = deceased.concat(array);
-			    deceased = newArr;
-				  }
-				}
-		    }*/
-
-
 	
 		//console.log((parseInt(confirmed[38].confirmed)+parseInt(confirmed[75].confirmed)));
 		//console.log((confirmed[74]));
@@ -270,6 +226,33 @@ async function getStateStatsTimeline() {
 			}
 		}
 		//console.log(covid_world_timeline);
+		var lastentry = covid_world_timeline.length-1;
+		console.log(covid_world_timeline[lastentry].date);
+		//if stats not updated
+		if (covid_world_timeline[lastentry].date<currentdate){
+			//console.log("test");
+			let res = await axios.get('https://api.covid19india.org/data.json');
+
+		    let data = res.data;
+		    list=[];
+		    //console.log(data.statewise.length);
+
+		    for(var m = 0; m < data.statewise.length; m++) {
+		    	var obj = data.statewise[m];
+		    	//console.log(obj.active);
+		    	if(obj.statecode !="TT"){
+				Object.assign(listbuffer, [{"confirmed": parseInt(obj.confirmed),"deaths":parseInt(obj.deaths),"recovered":parseInt(obj.recovered),"id":"IN-"+obj.statecode}]);
+			    var newArr = list.concat(listbuffer);
+			    list = newArr;
+				}
+		    }
+
+			    Object.assign(covidarray, [{"date": currentdate,"list":list}]);
+			    var newArr = covid_world_timeline.concat(covidarray);
+			    covid_world_timeline = newArr;
+
+		}
+
 		//		fs.writeFile('india_world_timeline.js', 'var covid_world_timeline = '+JSON.stringify(covid_world_timeline), function (err) {
 		  //if (err) return console.log(err);
 		  //console.log('Hello World > helloworld.txt');
@@ -291,7 +274,7 @@ async function getMaharashtra() {
   	for(var i = 0; i < data.length; i++) {
 	for (let [key, value] of Object.entries(data[i])) {
 	  if(value=="Maharashtra"){
-	  		console.log(`${key}: ${value}`);
+	  		//console.log(`${key}: ${value}`);
 		var array = [];
 		var z;
 		for(var x = 0; x < data[i].districtData.length; x++){
@@ -310,7 +293,7 @@ async function getMaharashtra() {
 			districts.push({id:data[i].districtData[x].district,confirmed:data[i].districtData[x].confirmed,zone:z})
 		}
 		//array.push(data[i].districtData);
-		console.log(districts);
+		//console.log(districts);
 		}
 	}
 }
