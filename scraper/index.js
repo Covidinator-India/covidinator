@@ -14,20 +14,31 @@ async function makeGetRequest() {
   let res = await axios.get('https://api.covid19india.org/data.json');
 
   let data = res.data;
-  //console.log(data.cases_time_series);
+	    var array = [];
 
 	for(var i = 0; i < data.cases_time_series.length; i++) {
 	    var obj = data.cases_time_series[i];
-	    var array = [];
 	    if(formatDate(data.cases_time_series[i].date+"2020")>"2020-03-15"){
-
-	   
 	    Object.assign(array, [{confirmed: parseInt(obj.totalconfirmed),"deaths":parseInt(obj.totaldeceased),"recovered":parseInt(obj.totalrecovered),"date":formatDate(data.cases_time_series[i].date+"2020")}]);
 	    var newArr = covid_total_timeline.concat(array);
 	    covid_total_timeline = newArr;
 	  }
 	}
-		//console.log((covid_total_timeline));
+	var lastentry = covid_total_timeline.length-1;
+	var currentdate = formatDate(new Date());
+	var lastdate = covid_total_timeline[lastentry].date;
+	console.log(currentdate);
+	console.log(data.statewise[0].confirmed);
+	if (lastdate<currentdate){
+		Object.assign(array, [{confirmed: parseInt(data.statewise[0].confirmed),"deaths":parseInt(data.statewise[0].deaths),"recovered":parseInt(data.statewise[0].recovered),"date":currentdate}]);
+	    var newArr = covid_total_timeline.concat(array);
+	    covid_total_timeline = newArr;
+	}
+	console.log(covid_total_timeline[lastentry].date);
+	console.log(covid_total_timeline[34]);
+    console.log(covid_total_timeline[35]);
+
+
 		fs.writeFile('../data/js/india_total_timeline.js', 'var covid_total_timeline = '+ JSON.stringify(covid_total_timeline), function (err) {
 		  if (err) return console.log(err);
 		  //console.log('Hello World > helloworld.txt');
@@ -325,5 +336,5 @@ function formatDate(date) {
 }
 //getStateStats();
 //getStateStatsTimeline();
-//makeGetRequest();
-getMaharashtra();
+makeGetRequest();
+//getMaharashtra();
