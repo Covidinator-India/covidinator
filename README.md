@@ -1,5 +1,6 @@
 # Covidinator
 Interacive COVID-19 dashboard for India featuring state-wise data.
+https://covidinator.in
 
 ## Technology
 ### Charts
