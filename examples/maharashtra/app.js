@@ -51,6 +51,7 @@ am4core.ready(function() {
     'Bid' : 2585049,
     'Solapur' : 4317756,
     'Dhule' : 2050862,
+    'Nanded' : 3361292,
     'Chandrapur' : 2204307,
     'Nandurbar' : 1648295,
     'Unknown' : 552
