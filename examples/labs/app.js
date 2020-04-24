@@ -474,29 +474,35 @@ colSeriesTemplate.events.on("hit", function(ev) {
 
 
 //Adding functions
-  // what happens when a country is rolled-over
-  function rollOverLab(place_id) {
-
+  // what happens when a lab is rolled-over
+  function rollOverLab(place,type) {
     resetHover();
-    console.log(place_id);
-    for(var i = 0; i< govSeries.data.length; i++){
-      console.log[i];
+
+    if(type=="GOV"){
+        govSeries.dataItems.each(function(dataItem) {
+          if(dataItem.dataContext.place_id == place){
+          console.log(dataItem);
+          dataItem.mapImage.isHover = true;
+         }
+        })
     }
-      /*var image = govSeries.getImageById(govSeries.place_id);
-      if (image) {
-        image.dataItem.dataContext.place_id = govSeries.dataItem.dataContext.place_id;
-        image.isHover = true;
-      }
-      var image = pvtSeries.getImageById(pvtSeries.dataItem.place_id);
-      if (image) {
-        image.dataItem.dataContext.place_id = pvtSeries.dataItem.dataContext.place_id;
-        image.isHover = true;
-      }
-      var image = colSeries.getImageById(colSeries.dataItem.place_id);
-      if (image) {
-        image.dataItem.dataContext.place_id = colSeries.dataItem.dataContext.place_id;
-        image.isHover = true;
-      }*/
+    else if(type=="PRIVATE"){
+        pvtSeries.dataItems.each(function(dataItem) {
+          if(dataItem.dataContext.place_id == place){
+          console.log(dataItem);
+          dataItem.mapImage.isHover = true;
+         }
+        })
+    }
+    else if(type=="COLLECTION"){
+        colSeries.dataItems.each(function(dataItem) {
+          if(dataItem.dataContext.place_id == place){
+          console.log(dataItem);
+          dataItem.mapImage.isHover = true;
+         }
+        })
+    }
+
   }
 
     // what happens when a country is rolled-out
@@ -504,9 +510,7 @@ colSeriesTemplate.events.on("hit", function(ev) {
     var image = bubbleSeries.getImageById(mapPolygon.dataItem.id)
 
     resetHover();
-    if (image) {
-      image.isHover = false;
-    }
+
   }
 
     function resetHover() {
@@ -514,16 +518,16 @@ colSeriesTemplate.events.on("hit", function(ev) {
       polygon.isHover = false;
     })
 
-    govSeries.mapImages.each(function(image) {
-      image.isHover = false;
+    govSeries.dataItems.each(function(dataItem) {
+      dataItem.mapImage.isHover = false;
     })
 
-    pvtSeries.mapImages.each(function(image) {
-      image.isHover = false;
+    pvtSeries.dataItems.each(function(dataItem) {
+      dataItem.mapImage.isHover = false;
     })
 
-    colSeries.mapImages.each(function(image) {
-      image.isHover = false;
+    colSeries.dataItems.each(function(dataItem) {
+      dataItem.mapImage.isHover = false;
     })
   }
 
@@ -532,10 +536,12 @@ function populateLabs(list) {
   table.find(".area").remove();
   for (var i = 0; i < list.length; i++) {
     var lab = list[i];
-    var tr = $("<tr>").addClass("lab").data("labname", lab.place_id).appendTo(table).on("click", function() {
+    var tr = $("<tr>").addClass("lab").data({"labname": lab.place_id,"type": lab.type}).appendTo(table).on("click", function() {
       selectLab(labname);
     }).hover(function() {
-     rollOverLab($(this).data("labname"));
+
+         rollOverLab($(this).data("labname"),$(this).data("type"));
+
     });
     $("<td>").appendTo(tr).data("labname", lab.place_id).html(lab.name);
     $("<td>").addClass("areaid").appendTo(tr).html(lab.type);
