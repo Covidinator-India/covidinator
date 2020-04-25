@@ -84,7 +84,7 @@ am4core.ready(function() {
 
   // last date of the data DATE ISSUE HERE
   var lastDate = new Date(covid_total_timeline[covid_total_timeline.length-1].date);
-  //var currentDate = lastDate;
+  var currentDate = lastDate;
   //var lastDate = "2020-4-17";
   var currentPolygon;
 
