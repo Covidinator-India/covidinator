@@ -449,7 +449,7 @@ function updateMapPosition(ev) {
     return;
 
   // set google map zoom level:
-  gmap.setZoom(Math.log2(ammap.zoomLevel) + 4);
+  gmap.setZoom(Math.log2(ammap.zoomLevel) + 5);
 
   // sync position
   gmap.setCenter( {
