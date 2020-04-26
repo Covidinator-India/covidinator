@@ -263,7 +263,7 @@ govSeries.tooltip.background.fillOpacity = 0.2;
 //govSeriesTemplate.nonScaling = true;
 govSeriesTemplate.strokeOpacity = 0;
 govSeriesTemplate.fillOpacity = 0.85;
-govSeriesTemplate.tooltipHTML = "<b>{name} | {city}, {state}</b></br></br><b>Type:</b> {type}</br><b>Address:</b> {address}</br>(click for more info)";
+govSeriesTemplate.tooltipHTML = "<b>{name} | {city}, {state}</b></br></br><b>Type:</b> {type}</br><b>Address:</b> {address}</br>(click for directions)";
 govSeriesTemplate.applyOnClones = true;
 
 
@@ -306,7 +306,7 @@ pvtSeries.tooltip.background.fillOpacity = 0.2;
 //govSeriesTemplate.nonScaling = true;
 pvtSeriesTemplate.strokeOpacity = 0;
 pvtSeriesTemplate.fillOpacity = 0.85;
-pvtSeriesTemplate.tooltipHTML = "<b>{name} | {city}, {state}</b></br></br><b>Type:</b> {type}</br><b>Address:</b> {address}</br>(click for more info)";
+pvtSeriesTemplate.tooltipHTML = "<b>{name} | {city}, {state}</b></br></br><b>Type:</b> {type}</br><b>Address:</b> {address}</br>(click for directions)";
 pvtSeriesTemplate.applyOnClones = true;
 
 //Collection Series
@@ -349,7 +349,7 @@ colSeries.tooltip.background.fillOpacity = 0.2;
 //colSeriesTemplate.nonScaling = true;
 colSeriesTemplate.strokeOpacity = 0;
 colSeriesTemplate.fillOpacity = 0.85;
-colSeriesTemplate.tooltipHTML = "<b>{name} | {city}, {state}</b></br></br><b>Type:</b> {type}</br><b>Address:</b> {address}</br>(click for more info)";
+colSeriesTemplate.tooltipHTML = "<b>{name} | {city}, {state}</b></br></br><b>Type:</b> {type}</br><b>Address:</b> {address}</br>(click for directions)";
 colSeriesTemplate.applyOnClones = true;
 
 //Legend
@@ -387,6 +387,7 @@ markerimg.nonScaling = true;
 markerimg.strokeWidth = 0.02;
 markerimg.path = "m -3.5639398,6.73232 h 1.58403 v 0.79201 h -1.58403 z M -5.54397,4.75228 H 1.202e-4 V 5.9403 H -5.54397 Z m 5.2272802,0 H -4.98956 l 1.7028302,-3.16805 h 1.22762 z m -2.85124,-3.96006 h 1.18802 v 0.79201 h -1.18802 z M -4.75196,-0.79181 h 4.3560702 V 0.79222 M -4.75196,-0.79181 h 4.3560702 V 0.79222 H -4.75196 Z m -1.18802,-11.08818 h 6.3361102 v 1.58402 M -5.93998,-11.87999 h 6.3361102 v 1.58402 H -5.93998 Z m 0.39601,9.50415 h 5.9401002 v 1.58403 M -5.54397,-2.37584 h 5.9401002 v 1.58403 H -5.54397 Z m 3.3660502,-3.24725 c 0.27721,0.27721 0.27721,0.71281 0,0.99002 -0.2772,0.2772 -0.71281,0.2772 -0.99001,0 m 1.22762,-0.47521 a 0.71281178,0.71281178 0 0 1 -0.71281,0.71281 0.71281178,0.71281178 0 0 1 -0.71282,-0.71281 0.71281178,0.71281178 0 0 1 0.71282,-0.71281 0.71281178,0.71281178 0 0 1 0.71281,0.71281 m 0.47521,0 a 1.1880197,1.1880197 0 0 1 -1.18802,1.18802 1.1880197,1.1880197 0 0 1 -1.18802,-1.18802 1.1880197,1.1880197 0 0 1 1.18802,-1.18802 1.1880197,1.1880197 0 0 1 1.18802,1.18802 M -4.75196,-10.29597 h 3.9600702 v 7.92013 M -4.75196,-10.29597 h 3.9600702 v 7.92013 H -4.75196 Z m 0.3960102,-1.98003 h 3.16805 v 1.58403 h -3.16805 z M 7.32624,0.119 c 0,4.47488 -3.76206,8.11814 -8.1181298,8.11814 V 4.91068 C 1.9801503,4.91068 3.99979,2.77225 3.99979,0.119 M -0.7918898,8.19754 V 4.87109 c 2.7720401,0 4.7916798,-2.13844 4.7916798,-4.79168 0,-2.65325 -2.0196397,-4.79168 -4.7916798,-4.79168 v -3.32646 c 4.3560698,0 8.1181298,3.64326 8.1181298,8.11814 0,4.51447 -3.76206,8.11813 -8.1181298,8.11813 z m 0,-2.29684 v 4.39568 H -7.0092 c -0.198,0.79201 -0.3168,1.58402 -0.3168,1.98003 H 5.70261 C 5.74221,8.71235 2.77217,5.9007 -0.7918898,5.9007 Z";
 */
+
 //Add Person
 // Add image series
 function addPerson(lat,lng){
@@ -482,16 +483,18 @@ function distance(lat1,lon1,lat2,lon2){
 
 
 govSeriesTemplate.events.on("hit", function(ev) {
+  //getLabLocation(ev.target.dataItem.dataContext.place_id);
+  console.log("PID:" + ev.target.dataItem.dataContext.place_id);
   ammap.closeAllPopups();
-  ammap.openPopup("<b>"+ ev.target.dataItem.dataContext.name +" | "+ ev.target.dataItem.dataContext.city + ", " + ev.target.dataItem.dataContext.state + "</b></br></br><b>Type:</b>" + ev.target.dataItem.dataContext.type + "</br><b>Address:</b>" + ev.target.dataItem.dataContext.address + "</br><a href='https://www.google.com/maps/place/?q=" + ev.target.dataItem.dataContext.name + ev.target.dataItem.dataContext.address + "'><b>Get Directions</b></a>");
+  ammap.openPopup("<b>"+ ev.target.dataItem.dataContext.name +" | "+ ev.target.dataItem.dataContext.city + ", " + ev.target.dataItem.dataContext.state + "</b></br></br><b>Type:</b>" + ev.target.dataItem.dataContext.type + "</br><b>Address:</b>" + ev.target.dataItem.dataContext.address + "</br><a onclick='getLabLocation(\"" + ev.target.dataItem.dataContext.place_id + "\")'><button>Get Directions</button></a> | <a target='_blank' href='https://www.google.com/maps/place/?q=" + ev.target.dataItem.dataContext.name + ev.target.dataItem.dataContext.address + "'><b><button>Open in Google Maps</button></b></a>", "Lab Details");
 });
 pvtSeriesTemplate.events.on("hit", function(ev) {
   ammap.closeAllPopups();
-  ammap.openPopup("<b>"+ ev.target.dataItem.dataContext.name +" | "+ ev.target.dataItem.dataContext.city + ", " + ev.target.dataItem.dataContext.state + "</b></br></br><b>Type:</b>" + ev.target.dataItem.dataContext.type + "</br><b>Address:</b>" + ev.target.dataItem.dataContext.address + "</br><a href='https://www.google.com/maps/place/?q=" + ev.target.dataItem.dataContext.name + ev.target.dataItem.dataContext.address + "'><b>Get Directions</b></a>");
+  ammap.openPopup("<b>"+ ev.target.dataItem.dataContext.name +" | "+ ev.target.dataItem.dataContext.city + ", " + ev.target.dataItem.dataContext.state + "</b></br></br><b>Type:</b>" + ev.target.dataItem.dataContext.type + "</br><b>Address:</b>" + ev.target.dataItem.dataContext.address + "</br><a onclick='getLabLocation(\"" + ev.target.dataItem.dataContext.place_id + "\")'><button>Get Directions</button></a> | <a target='_blank' href='https://www.google.com/maps/place/?q=" + ev.target.dataItem.dataContext.name + ev.target.dataItem.dataContext.address + "'><b><button>Open in Google Maps</button></b></a>", "Lab Details");
 });
 colSeriesTemplate.events.on("hit", function(ev) {
   ammap.closeAllPopups();
-  ammap.openPopup("<b>"+ ev.target.dataItem.dataContext.name +" | "+ ev.target.dataItem.dataContext.city + ", " + ev.target.dataItem.dataContext.state + "</b></br></br><b>Type:</b>" + ev.target.dataItem.dataContext.type + "</br><b>Address:</b>" + ev.target.dataItem.dataContext.address + "</br><a href='https://www.google.com/maps/place/?q=" + ev.target.dataItem.dataContext.name + ev.target.dataItem.dataContext.address + "'><b>Get Directions</b></a>");
+ ammap.openPopup("<b>"+ ev.target.dataItem.dataContext.name +" | "+ ev.target.dataItem.dataContext.city + ", " + ev.target.dataItem.dataContext.state + "</b></br></br><b>Type:</b>" + ev.target.dataItem.dataContext.type + "</br><b>Address:</b>" + ev.target.dataItem.dataContext.address + "</br><a onclick='getLabLocation(\"" + ev.target.dataItem.dataContext.place_id + "\")'><button>Get Directions</button></a> | <a target='_blank' href='https://www.google.com/maps/place/?q=" + ev.target.dataItem.dataContext.name + ev.target.dataItem.dataContext.address + "'><b><button>Open in Google Maps</button></b></a>", "Lab Details");
 });
 
 
@@ -557,14 +560,14 @@ function getLabLocation(place_id) {
 //var user = new google.maps.LatLng(user_lat, user_lon);
 var request = {
   origin: user_pos,
-  destination: place_id,
+  destination: {placeId: place_id},
   travelMode: 'DRIVING'
 };
 
-//console.log(request);
+console.log(request);
 directionsService.route(request, function(result, status) {
   if (status == 'OK') {
-    //console.log(result);
+    console.log(result);
     directionsRenderer.setDirections(result);
     $("#directionsPanel").css("display", "block");
   }
@@ -579,13 +582,14 @@ function refreshTable(){
   }
   $("#areas").DataTable().draw();*/
   $("#areas").css("display", "none");
+  $("#areas_wrapper").css("display", "none");
   $("#dirareas").css("display", "block");
   var table = $("#dirareas tbody");
   //table.find(".area").remove();
   for (var i = 0; i < list.length; i++) {
     var lab = list[i];
     var tr = $("<tr>").addClass("lab").data({"labname": lab.place_id,"type": lab.type,"labaddress": lab.name + lab.address}).appendTo(table).on("click", function() {
-      getLabLocation($(this).data("labaddress"));
+      getLabLocation($(this).data("labname"));
     }).hover(function() {
 
          rollOverLab($(this).data("labname"),$(this).data("type"));
@@ -594,7 +598,7 @@ function refreshTable(){
     $("<td>").appendTo(tr).data("labname", lab.place_id).html(lab.name);
     $("<td>").addClass("type").appendTo(tr).html(lab.type);
     $("<td>").addClass("city").appendTo(tr).html(lab.city);
-    $("<td>").addClass("distance"+i).appendTo(tr).html(lab.distance.toFixed());
+    $("<td>").addClass("distance").appendTo(tr).html(lab.distance.toFixed());
   }
   $("#dirareas").DataTable({
     "paging": false,
@@ -621,7 +625,6 @@ function populateLabs(list) {
     $("<td>").addClass("type").appendTo(tr).html(lab.type);
     $("<td>").addClass("city").appendTo(tr).html(lab.city);
     $("<td>").addClass("state").appendTo(tr).html(lab.state);
-    $("<td>").addClass("distance"+i).appendTo(tr).html(lab.distance);
 
   }
   $("#areas").DataTable({
