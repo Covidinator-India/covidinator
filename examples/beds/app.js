@@ -616,6 +616,9 @@ imageTemplate.adapter.add("longitude", function(longitude, target) {
       }
     }
   }
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   function handleCountryOver(event) {
     rollOverCountry(event.target);
@@ -632,9 +635,9 @@ imageTemplate.adapter.add("longitude", function(longitude, target) {
         rollOverCountry(polygonSeries.getPolygonById($(this).data("areaid")));
       });
       $("<td>").appendTo(tr).data("areaid", area.name).html(area.name);
-      $("<td>").addClass("value").appendTo(tr).html(area.ruralBeds);
-      $("<td>").addClass("value").appendTo(tr).html(area.urbanBeds);
-      $("<td>").addClass("value").appendTo(tr).html(area.totalBeds);
+      $("<td>").addClass("value").appendTo(tr).html(numberWithCommas(area.ruralBeds));
+      $("<td>").addClass("value").appendTo(tr).html(numberWithCommas(area.urbanBeds));
+      $("<td>").addClass("value").appendTo(tr).html(numberWithCommas(area.totalBeds));
     }
     $("#areas").DataTable({
       "paging": false,
