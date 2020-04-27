@@ -33,6 +33,7 @@
 
     <!-- Stylesheet -->
     <link rel="stylesheet" media="all" href="examples/india/dark.css" />
+    <link rel="stylesheet" media="all" href="examples/india/menu.css" />
     <style>
       .mapdiv{
         position: absolute;
@@ -208,6 +209,20 @@
 
   </head>
   <body onload="ammap.goHome();polygonSeries.show();">
+<nav id="menu">
+  <ul id="menu-closed">
+    <li><a href="https://covidinator.in">Dashboard</a></li>
+    <li><a href="https://covidinator.in/labs.html">Lab Locator</a></li>
+    <li><a href="https://covidinator.in/beds.html">Hospital Beds</a></li>
+    <!--<li><a href="#">Menu Item 3</a></li>
+    <li><a href="#">Menu Item 4</a></li>
+    <li><a href="#">Menu Item 5</a></li>
+    <li><a href="#">Menu Item 6</a></li>
+    <li><a href="#">Menu Item 7</a></li>-->
+    <li><a href="#menu-closed">&#215; Close menu</a></li>
+    <li><a href="#menu">&#9776; Menu</a></li>
+  </ul>
+</nav>
 <!-- HTML -->
 <div class="flexbox">
 <div id="chartdiv" class="chartdiv">
