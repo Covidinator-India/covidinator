@@ -647,4 +647,4 @@ imageTemplate.adapter.add("longitude", function(longitude, target) {
       .draw();;
   }
 
-})
+});
