@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covidinator.in | COVID-19 Dashboard for India</title>
+
+    <!-- amCharts includes -->
+    <script src="deps/amcharts4/core.js"></script>
+    <script src="deps/amcharts4/charts.js"></script>
+    <script src="deps/amcharts4/maps.js"></script>
+    
+    <script src="deps/amcharts4/themes/dark.js"></script>
+    <script src="deps/amcharts4/themes/animated.js"></script>
+    <script src="deps/amcharts4-geodata/worldIndiaLow.js"></script>
+    <!--<script src="deps/amcharts4-geodatadata/countries2.js"></script>-->
+    <script src="deps/amcharts4-geodata/data/states_in.js"></script>
+
+
+    <!-- DataTables includes -->
+    <script src="deps/jquery/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" media="all" href="deps/datatables/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" media="all" href="deps/datatables/css/select.dataTables.min.css" />
+    <script src="deps/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="deps/datatables/js/dataTables.select.min.js"></script>
+
+    <!-- Data  -->
+    <script src="data/js/india_states_timeline.js"></script>
+    <script src="data/js/india_total_timeline.js"></script>
+    <!--<script src="data/js/india_total.js"></script>-->
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" media="all" href="examples/india/dark.css" />
+    <link rel="stylesheet" media="all" href="examples/india/menu.css" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163963487-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-163963487-1');
+    </script>
+    <!-- Main app -->
+    <script src="examples/beds/app.js"></script>
+
+  </head>
+  <body>
+    <nav id="menu">
+      <ul id="menu-closed">
+        <li><a href="https://covidinator.in">Dashboard</a></li>
+        <li><a href="https://covidinator.in/labs.html">Lab Locator</a></li>
+        <li><a href="https://covidinator.in/beds.html">Hospital Beds</a></li>
+        <!--<li><a href="#">Menu Item 4</a></li>
+        <li><a href="#">Menu Item 5</a></li>
+        <li><a href="#">Menu Item 6</a></li>
+        <li><a href="#">Menu Item 7</a></li>-->
+        <li><a href="#menu-closed">&#215; Close menu</a></li>
+        <li><a href="#menu">&#9776; Menu</a></li>
+      </ul>
+    </nav>
+
+    <div class="flexbox">
+      <div id="chartdiv" class="chartdiv"></div>
+      <div id="list">
+        <table id="areas" class="compact hover order-column row-border">
+          <thead>
+            <tr>
+              <th>State</th>
+              <th>Beds (rural)</th>
+              <th>Beds (urban)</th>
+              <th>Beds (total)</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
