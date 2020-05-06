@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covidinator.in | COVID-19 Dashboard for India</title>
+
+    <!-- amCharts includes -->
+    <script src="deps/amcharts4/core.js"></script>
+    <script src="deps/amcharts4/charts.js"></script>
+    <script src="deps/amcharts4/maps.js"></script>
+    
+    <script src="deps/amcharts4/themes/dark.js"></script>
+    <script src="deps/amcharts4/themes/animated.js"></script>
+    <script src="deps/amcharts4-geodata/worldIndiaLow.js"></script>
+
+
+    <!-- DataTables includes -->
+    <script src="deps/jquery/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" media="all" href="deps/datatables/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" media="all" href="deps/datatables/css/select.dataTables.min.css" />
+    <script src="deps/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="deps/datatables/js/dataTables.select.min.js"></script>
+
+    <!-- Data  -->
+    <script src="data/js/india_states_timeline.js"></script>
+    <script src="data/js/india_total_timeline.js"></script>
+    <!--<script src="data/js/ICU_data.js"></script>-->
+    <script src="data/js/icu_processed.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" media="all" href="examples/india/dark.css" />
+    <link rel="stylesheet" media="all" href="examples/india/menu.css" />
+    <style>
+      .mapdiv{
+        position: absolute;
+        width: 65%;
+        height: 100%;
+      }
+
+      .gm-style-iw-a {
+        z-index:999;
+      }
+      .adp, .adp table {
+        color: #fff !important;
+      }
+      .adp-placemark {
+        background-color:rgba(0, 0, 0, 0.8) !important;
+      }
+
+      .ampopup {
+        overflow: visible;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2000
+      }
+
+      .ampopup-curtain {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2001;
+        background: #fff;
+        opacity: 0.5
+      }
+
+      .ampopup-title {
+        font-weight: bold;
+        font-size: 120%
+      }
+
+      .ampopup-content {
+        background: rgb(255, 255, 255);
+        background-color: rgba(0, 0, 0, 0.8) !important;
+        display: inline-block;
+        border:1px solid #fff;
+        position: absolute;
+        color: rgb(255,255,255,0.8) !important;
+        max-width: 90%;
+        max-height: 90%;
+        overflow: auto;
+        z-index: 2002
+      }
+
+      .ampopup-close {
+        display: block;
+        position: absolute;
+        top: 0.3em;
+        right: 0.3em;
+        background-color: rgb(255, 255, 255,2) !important;
+        background: rgba(255, 255, 255, 0.5) url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyBoZWlnaHQ9IjUxMiIgdmVyc2lvbj0iMSIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHdpZHRoPSI1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTQ0NS4yIDEwOS4ybC00Mi40LTQyLjRMMjU2IDIxMy42IDEwOS4yIDY2LjhsLTQyLjQgNDIuNEwyMTMuNiAyNTYgNjYuOCA0MDIuOGw0Mi40IDQyLjRMMjU2IDI5OC40bDE0Ni44IDE0Ni44IDQyLjQtNDIuNEwyOTguNCAyNTYiLz48L3N2Zz4=) no-repeat center;
+        background-size: 80%;
+        width: 1.2em;
+        height: 1.2em;
+        cursor: pointer
+      }
+
+      @media screen and (max-width: 1000px){
+        #list {
+            display: none;
+            overflow: ;
+        }
+        .mapdiv{
+          width:100%;
+        }
+}
+.map-marker {
+    /* adjusting for the marker dimensions
+    so that it is centered on coordinates */
+    margin-left: -8px;
+    margin-top: -8px;
+    box-sizing: border-box;
+}
+.map-marker.map-clickable {
+    cursor: pointer;
+}
+.pulse {
+    width: 10px;
+    height: 10px;
+    border: 5px solid #f7f14c;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border-radius: 30px;
+    background-color: #716f42;
+    z-index: 10;
+    position: absolute;
+    box-sizing: border-box;
+}
+.map-marker .dot {
+    border: 10px solid #fff601;
+    background: transparent;
+    -webkit-border-radius: 60px;
+    -moz-border-radius: 60px;
+    border-radius: 60px;
+    height: 50px;
+    width: 50px;
+    -webkit-animation: pulse 3s ease-out;
+    -moz-animation: pulse 3s ease-out;
+    animation: pulse 3s ease-out;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    z-index: 1;
+    opacity: 0;
+    box-sizing: border-box;
+}
+@-moz-keyframes pulse {
+   0% {
+      -moz-transform: scale(0);
+      opacity: 0.0;
+   }
+   25% {
+      -moz-transform: scale(0);
+      opacity: 0.1;
+   }
+   50% {
+      -moz-transform: scale(0.1);
+      opacity: 0.3;
+   }
+   75% {
+      -moz-transform: scale(0.5);
+      opacity: 0.5;
+   }
+   100% {
+      -moz-transform: scale(1);
+      opacity: 0.0;
+   }
+  }
+  @-webkit-keyframes "pulse" {
+   0% {
+      -webkit-transform: scale(0);
+      opacity: 0.0;
+   }
+   25% {
+      -webkit-transform: scale(0);
+      opacity: 0.1;
+   }
+   50% {
+      -webkit-transform: scale(0.1);
+      opacity: 0.3;
+   }
+   75% {
+      -webkit-transform: scale(0.5);
+      opacity: 0.5;
+   }
+   100% {
+      -webkit-transform: scale(1);
+      opacity: 0.0;
+   }
+}
+
+#areas_filter label {
+    color: rgba(255,255,255,0.6);
+}
+
+td.details-control {
+    background: url('data/img/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('data/img/details_close.png') no-repeat center center;
+}
+.additionalinfo {
+float:right;
+}
+.additionalinfo td, .additionalinfo th {
+  box-sizing: content-box;
+  display: table-cell;
+  width:75px;
+  text-align: right;
+}
+.additionalinfo td {
+  border:1px solid #ff8726;
+}
+
+</style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163963487-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-163963487-1');
+    </script>
+
+  </head>
+  <body onload="//ammap.goHome();">
+<nav id="menu">
+  <ul id="menu-closed">
+    <li><a href="https://covidinator.in">Dashboard</a></li>
+    <li><a href="https://covidinator.in/labs.html">Lab Locator</a></li>
+    <li><a href="https://covidinator.in/beds.html">Hospital Beds</a></li>
+    <!--<li><a href="#">Menu Item 3</a></li>
+    <li><a href="#">Menu Item 4</a></li>
+    <li><a href="#">Menu Item 5</a></li>
+    <li><a href="#">Menu Item 6</a></li>
+    <li><a href="#">Menu Item 7</a></li>-->
+    <li><a href="#menu-closed">&#215; Close menu</a></li>
+    <li><a href="#menu">&#9776; Menu</a></li>
+  </ul>
+</nav>
+<!-- HTML -->
+<div class="flexbox">
+<div id="chartdiv" class="chartdiv">
+  <div id="gmap" class="mapdiv" style="visibility: visible;"></div>
+  <div id="ammap" class="mapdiv" style="visibility: visible;"></div>
+</div>
+
+      <div id="list">
+        <div>
+          Data: <button><a class="toggle-vis" data-column="2 3 4">Hospitals</a></button> | <button><a class="toggle-vis" data-column="5 6 7">Beds</a></button> | <button><a class="toggle-vis" data-column="8 9 10">ICU Beds</a></button> | <button><a class="toggle-vis" data-column="11 12 13">Ventilators</a></button>
+        </div>
+        <table id="areas" class="compact hover order-column row-border">
+          <thead>
+            <tr>
+              <th></th>
+              <th>State</th>
+              <th>Public Hospitals</th>
+              <th>Private Hospitals</th>
+              <th>Total Hospitals</th>
+              <th>Public Beds</th>
+              <th>Private Beds</th>
+              <th>Total Beds</th>
+              <th>Public ICUs</th>
+              <th>Private ICUs</th>
+              <th>Total ICUs</th>
+              <th>Public Ventilators</th>
+              <th>Private Ventilators</th>
+              <th>Total Ventlators</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Main app -->
+    <script src="examples/icu/app.js"></script>
+  </body>
+</html>
