@@ -29,7 +29,7 @@ ammap.zoomEasing = am4core.ease.sinOut;
 // top title
 var title = ammap.titles.create();
 title.fontSize = "1.5em";
-title.text = "Hospitals, Beds, ICUs, and Ventilators";
+title.text = "Hospitals, Beds, ICUs, and Ventilators (CDDEP Estimates)";
 title.align = "left";
 title.horizontalCenter = "left";
 title.marginLeft = 20;
@@ -315,6 +315,129 @@ pieSeriesTemplateVentilator.slices.template.propertyFields.fill = "color";
 pieSeriesTemplateVentilator.labels.template.disabled = true;
 pieSeriesTemplateVentilator.ticks.template.disabled = true;
 
+// Combined Pie Chart
+
+// Create an image series that will hold pie charts
+var pieSeriesCombined = ammap.series.push(new am4maps.MapImageSeries());
+var pieTemplateCombined = pieSeriesCombined.mapImages.template;
+pieTemplateCombined.propertyFields.latitude = "latitude"; //FIX THIS LATER
+pieTemplateCombined.propertyFields.longitude = "longitude";
+pieSeriesCombined.fill = am4core.color("#000");
+pieSeriesCombined.data = icu;
+pieSeriesCombined.dataFields.id = "id";
+pieSeriesCombined.dataFields.name = "name";
+pieSeriesCombined.name = "Combined";
+//Combined Hospitals
+var pieChartTemplateCombinedH = pieTemplateCombined.createChild(am4charts.PieChart);
+pieChartTemplateCombinedH.adapter.add("data", function(data, target) {
+  if (target.dataItem) {
+    return target.dataItem.dataContext.pieDataHospitals;
+  }
+  else {
+    return [];
+  }
+});
+//pieChartTemplate.propertyFields.width = 1;
+//pieChartTemplate.propertyFields.height = 1;
+pieChartTemplateCombinedH.nonScaling = true;
+pieChartTemplateCombinedH.horizontalCenter = "middle";
+pieChartTemplateCombinedH.verticalCenter = "middle";
+pieChartTemplateCombinedH.innerRadius = am4core.percent(40);
+pieChartTemplateCombinedH.width = 60;
+pieChartTemplateCombinedH.height = 60;
+//var pieTitle = pieChartTemplate.titles.create();
+//pieTitle.text = "{name}";
+//pieTitle.fill = am4core.color("#fff");
+var pieSeriesTemplateCombinedH = pieChartTemplateCombinedH.series.push(new am4charts.PieSeries);
+pieSeriesTemplateCombinedH.dataFields.category = "category";
+pieSeriesTemplateCombinedH.dataFields.value = "value";
+pieSeriesTemplateCombinedH.slices.template.propertyFields.fill = "color";
+pieSeriesTemplateCombinedH.labels.template.disabled = true;
+pieSeriesTemplateCombinedH.ticks.template.disabled = true;
+
+//Combined Bed
+var pieChartTemplateCombinedB = pieTemplateCombined.createChild(am4charts.PieChart);
+pieChartTemplateCombinedB.adapter.add("data", function(data, target) {
+  if (target.dataItem) {
+    return target.dataItem.dataContext.pieDataBeds;
+  }
+  else {
+    return [];
+  }
+});
+//pieChartTemplate.propertyFields.width = 1;
+//pieChartTemplate.propertyFields.height = 1;
+pieChartTemplateCombinedB.nonScaling = true;
+pieChartTemplateCombinedB.horizontalCenter = "middle";
+pieChartTemplateCombinedB.verticalCenter = "middle";
+pieChartTemplateCombinedB.innerRadius = am4core.percent(70);
+pieChartTemplateCombinedB.width = 80;
+pieChartTemplateCombinedB.height = 80;
+//var pieTitle = pieChartTemplate.titles.create();
+//pieTitle.text = "{name}";
+//pieTitle.fill = am4core.color("#fff");
+var pieSeriesTemplateCombinedB = pieChartTemplateCombinedB.series.push(new am4charts.PieSeries);
+pieSeriesTemplateCombinedB.dataFields.category = "category";
+pieSeriesTemplateCombinedB.dataFields.value = "value";
+pieSeriesTemplateCombinedB.slices.template.propertyFields.fill = "color";
+pieSeriesTemplateCombinedB.labels.template.disabled = true;
+pieSeriesTemplateCombinedB.ticks.template.disabled = true;
+
+//Combined ICU
+var pieChartTemplateCombinedI = pieTemplateCombined.createChild(am4charts.PieChart);
+pieChartTemplateCombinedI.adapter.add("data", function(data, target) {
+  if (target.dataItem) {
+    return target.dataItem.dataContext.pieDataICUs;
+  }
+  else {
+    return [];
+  }
+});
+//pieChartTemplate.propertyFields.width = 1;
+//pieChartTemplate.propertyFields.height = 1;
+pieChartTemplateCombinedI.nonScaling = true;
+pieChartTemplateCombinedI.horizontalCenter = "middle";
+pieChartTemplateCombinedI.verticalCenter = "middle";
+pieChartTemplateCombinedI.innerRadius = am4core.percent(70);
+pieChartTemplateCombinedI.width = 100;
+pieChartTemplateCombinedI.height = 100;
+//var pieTitle = pieChartTemplate.titles.create();
+//pieTitle.text = "{name}";
+//pieTitle.fill = am4core.color("#fff");
+var pieSeriesTemplateCombinedI = pieChartTemplateCombinedI.series.push(new am4charts.PieSeries);
+pieSeriesTemplateCombinedI.dataFields.category = "category";
+pieSeriesTemplateCombinedI.dataFields.value = "value";
+pieSeriesTemplateCombinedI.slices.template.propertyFields.fill = "color";
+pieSeriesTemplateCombinedI.labels.template.disabled = true;
+pieSeriesTemplateCombinedI.ticks.template.disabled = true;
+
+//Combined Ventilator
+var pieChartTemplateCombinedV = pieTemplateCombined.createChild(am4charts.PieChart);
+pieChartTemplateCombinedV.adapter.add("data", function(data, target) {
+  if (target.dataItem) {
+    return target.dataItem.dataContext.pieDataVentilators;
+  }
+  else {
+    return [];
+  }
+});
+//pieChartTemplate.propertyFields.width = 1;
+//pieChartTemplate.propertyFields.height = 1;
+pieChartTemplateCombinedV.nonScaling = true;
+pieChartTemplateCombinedV.horizontalCenter = "middle";
+pieChartTemplateCombinedV.verticalCenter = "middle";
+pieChartTemplateCombinedV.innerRadius = am4core.percent(70);
+pieChartTemplateCombinedV.width = 120;
+pieChartTemplateCombinedV.height = 120;
+//var pieTitle = pieChartTemplate.titles.create();
+//pieTitle.text = "{name}";
+//pieTitle.fill = am4core.color("#fff");
+var pieSeriesTemplateCombinedV = pieChartTemplateCombinedV.series.push(new am4charts.PieSeries);
+pieSeriesTemplateCombinedV.dataFields.category = "category";
+pieSeriesTemplateCombinedV.dataFields.value = "value";
+pieSeriesTemplateCombinedV.slices.template.propertyFields.fill = "color";
+pieSeriesTemplateCombinedV.labels.template.disabled = true;
+pieSeriesTemplateCombinedV.ticks.template.disabled = true;
 
 /*
 //Government Series
@@ -402,29 +525,37 @@ pieSeries.events.on("shown", function() {
   pieSeriesBed.hide();
   pieSeriesICU.hide();
   pieSeriesVentilator.hide();
+  pieSeriesCombined.hide();
 });
 
 pieSeriesBed.events.on("shown", function() {
   pieSeries.hide();
   pieSeriesICU.hide();
   pieSeriesVentilator.hide();
+  pieSeriesCombined.hide();
 });
 
 pieSeriesICU.events.on("shown", function() {
   pieSeries.hide();
   pieSeriesBed.hide();
   pieSeriesVentilator.hide();
+  pieSeriesCombined.hide();
 });
 
 pieSeriesVentilator.events.on("shown", function() {
   pieSeries.hide();
   pieSeriesBed.hide();
   pieSeriesICU.hide();
+  pieSeriesCombined.hide();
 });
-// Set up GMap centering
-//ammap.events.on("zoomlevelchanged", updateMapPosition);
-//ammap.events.on("mappositionchanged", updateMapPosition);
-//ammap.events.on("scaleratiochanged", updateMapPosition);
+
+pieSeriesCombined.events.on("shown", function() {
+  pieSeries.hide();
+  pieSeriesBed.hide();
+  pieSeriesICU.hide();
+  pieSeriesVentilator.hide();
+});
+
 
 //Home button
 var button = ammap.chartContainer.createChild(am4core.Button);
@@ -440,53 +571,8 @@ button.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8
 
 populateLabs(icu);
 
-/*govSeriesTemplate.events.on("hit", function(ev) {
-  //getLabLocation(ev.target.dataItem.dataContext.place_id);
-  console.log("PID:" + ev.target.dataItem.dataContext.place_id);
-  ammap.closeAllPopups();
-  ammap.openPopup("<b>"+ ev.target.dataItem.dataContext.name +" | "+ ev.target.dataItem.dataContext.city + ", " + ev.target.dataItem.dataContext.state + "</b></br></br><b>Type:</b>" + ev.target.dataItem.dataContext.type + "</br><b>Address:</b>" + ev.target.dataItem.dataContext.address + "</br><a onclick='getLabLocation(\"" + ev.target.dataItem.dataContext.place_id + "\")'><button>Get Directions</button></a> | <a target='_blank' href='https://www.google.com/maps/place/?q=" + ev.target.dataItem.dataContext.name + ev.target.dataItem.dataContext.address + "'><b><button>Open in Google Maps</button></b></a>", "Lab Details");
-});
-pvtSeriesTemplate.events.on("hit", function(ev) {
-  ammap.closeAllPopups();
-  ammap.openPopup("<b>"+ ev.target.dataItem.dataContext.name +" | "+ ev.target.dataItem.dataContext.city + ", " + ev.target.dataItem.dataContext.state + "</b></br></br><b>Type:</b>" + ev.target.dataItem.dataContext.type + "</br><b>Address:</b>" + ev.target.dataItem.dataContext.address + "</br><a onclick='getLabLocation(\"" + ev.target.dataItem.dataContext.place_id + "\")'><button>Get Directions</button></a> | <a target='_blank' href='https://www.google.com/maps/place/?q=" + ev.target.dataItem.dataContext.name + ev.target.dataItem.dataContext.address + "'><b><button>Open in Google Maps</button></b></a>", "Lab Details");
-});
-colSeriesTemplate.events.on("hit", function(ev) {
-  ammap.closeAllPopups();
- ammap.openPopup("<b>"+ ev.target.dataItem.dataContext.name +" | "+ ev.target.dataItem.dataContext.city + ", " + ev.target.dataItem.dataContext.state + "</b></br></br><b>Type:</b>" + ev.target.dataItem.dataContext.type + "</br><b>Address:</b>" + ev.target.dataItem.dataContext.address + "</br><a onclick='getLabLocation(\"" + ev.target.dataItem.dataContext.place_id + "\")'><button>Get Directions</button></a> | <a target='_blank' href='https://www.google.com/maps/place/?q=" + ev.target.dataItem.dataContext.name + ev.target.dataItem.dataContext.address + "'><b><button>Open in Google Maps</button></b></a>", "Lab Details");
-});
-*/
 
 //Adding functions
-  // what happens when a lab is rolled-over
-  function rollOverLab(place,type) {
-    resetHover();
-
-    if(type=="GOV"){
-        govSeries.dataItems.each(function(dataItem) {
-          if(dataItem.dataContext.place_id == place){
-          console.log(dataItem);
-          dataItem.mapImage.isHover = true;
-         }
-        })
-    }
-    else if(type=="PRIVATE"){
-        pvtSeries.dataItems.each(function(dataItem) {
-          if(dataItem.dataContext.place_id == place){
-          console.log(dataItem);
-          dataItem.mapImage.isHover = true;
-         }
-        })
-    }
-    else if(type=="COLLECTION"){
-        colSeries.dataItems.each(function(dataItem) {
-          if(dataItem.dataContext.place_id == place){
-          console.log(dataItem);
-          dataItem.mapImage.isHover = true;
-         }
-        })
-    }
-
-  }
 
 
   function resetHover() {
@@ -539,6 +625,8 @@ $(document).ready(function() {
   pieSeriesBed.hide();
   pieSeriesICU.hide();
   pieSeriesVentilator.hide();
+  pieSeriesCombined.hide();
+  pieSeries.show();
 
   var table = $("#areas").DataTable();
     // Add event listener for opening and closing details
@@ -579,7 +667,6 @@ $(document).ready(function() {
         }
  
     } );
-    $("a.amcharts-ampopup-close").trigger("click");
 } );
 
 
