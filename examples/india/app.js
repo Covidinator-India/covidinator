@@ -1501,9 +1501,9 @@ am4core.ready(function() {
         rollOverCountry(polygonSeries.getPolygonById($(this).data("areaid")));
       });
       $("<td>").appendTo(tr).data("areaid", area.id).html(area.name);
-      $("<td>").addClass("value").appendTo(tr).html(area.confirmed);
-      $("<td>").addClass("value").appendTo(tr).html(area.deaths);
-      $("<td>").addClass("value").appendTo(tr).html(area.recovered);
+      $("<td>").addClass("value").appendTo(tr).html( numberFormatter.format(area.confirmed, '#,###'));
+      $("<td>").addClass("value").appendTo(tr).html(numberFormatter.format(area.deaths, '#,###'));
+      $("<td>").addClass("value").appendTo(tr).html(numberFormatter.format(area.recovered, '#,###'));
 
     }
     $("#areas").DataTable({
