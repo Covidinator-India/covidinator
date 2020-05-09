@@ -1504,7 +1504,7 @@ am4core.ready(function() {
       $("<td>").addClass("value").appendTo(tr).html( numberFormatter.format(area.confirmed, '#,###'));
       $("<td>").addClass("value").appendTo(tr).html(numberFormatter.format(area.deaths, '#,###'));
       $("<td>").addClass("value").appendTo(tr).html(numberFormatter.format(area.recovered, '#,###'));
-      $("<td>").addClass("value").appendTo(tr).html(numberFormatter.format((area.deaths/area.confirmed), '#,###'));
+      $("<td>").addClass("value").appendTo(tr).html(numberFormatter.format((area.deaths/area.confirmed*100), '#,###'));
 
     }
     $("#areas").DataTable({
