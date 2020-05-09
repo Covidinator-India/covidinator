@@ -1508,7 +1508,7 @@ am4core.ready(function() {
              $("<td>").addClass("value").appendTo(tr).html( (area.deaths/area.confirmed*100).toFixed(2)+'%');
       }
       else{
-         $("<td>").addClass("value").appendTo(tr).html( 'NA');
+         $("<td>").addClass("value").appendTo(tr).html( '0%');
       }
 
     }
