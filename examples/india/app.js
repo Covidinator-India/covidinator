@@ -1504,12 +1504,11 @@ am4core.ready(function() {
       $("<td>").addClass("value").appendTo(tr).html( numberFormatter.format(area.confirmed, '#,###'));
       $("<td>").addClass("value").appendTo(tr).html(numberFormatter.format(area.deaths, '#,###'));
       $("<td>").addClass("value").appendTo(tr).html(numberFormatter.format(area.recovered, '#,###'));
-        if(area.deaths !=0){
+        if(area.deaths !==0){
              $("<td>").addClass("value").appendTo(tr).html( (area.deaths/area.confirmed*100).toFixed(2)+'%');
       }
       else{
          $("<td>").addClass("value").appendTo(tr).html( 'NA');
-      }
       }
 
     }
